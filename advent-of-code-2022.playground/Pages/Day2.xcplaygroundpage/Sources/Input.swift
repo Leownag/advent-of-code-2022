@@ -1,6 +1,10 @@
 import Foundation
 
-public let input = """
+public let transformInput = input
+    .components(separatedBy: "\n")
+    .map { $0.components(separatedBy: " ") }
+
+let input = """
 A Z
 C Z
 A X

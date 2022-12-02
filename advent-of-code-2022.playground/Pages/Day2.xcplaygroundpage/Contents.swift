@@ -64,15 +64,10 @@ enum Shape: Equatable {
     }
 }
 
-func solutionOne(_ input: String) -> Int {
-    var point = 0
 
-    let transformInput = input
-        .components(separatedBy: "\n")
-        .map {
-            $0.components(separatedBy: " ")
-        }
-    transformInput.map {
+func solutionOne(_ input: [[String]]) -> Int {
+    var point = 0
+    input.map {
         let elf = Shape.getShape($0[0])
         let cheater = Shape.getShape($0[1])
         point += cheater.point
@@ -82,15 +77,9 @@ func solutionOne(_ input: String) -> Int {
     return point
 }
 
-func solutionTwo(_ input: String) -> Int {
+func solutionTwo(_ input: [[String]]) -> Int {
     var point = 0
-
-    let transformInput = input
-        .components(separatedBy: "\n")
-        .map {
-            $0.components(separatedBy: " ")
-        }
-    transformInput.map {
+    input.map {
         let elf = Shape.getShape($0[0])
         let cheaterState = GameState.getState($0[1])
         point += cheaterState.point
@@ -100,47 +89,45 @@ func solutionTwo(_ input: String) -> Int {
 
     return point
 }
+
 func judgeGame(_ competitorMove: Shape, _ mineMove: Shape) -> GameState {
     guard competitorMove != mineMove else { return .draw }
-    switch (competitorMove, mineMove) {
-    case (.paper, .scissors):
-        return .win
-    case (.scissors, .rock):
-        return .win
-    case (.rock, .paper):
-        return .win
-
-    case (.paper, .rock):
-        return .lose
-    case (.scissors, .paper):
-        return .lose
-    case (.rock, .scissors):
-        return .lose
-    default:
-        fatalError("Never")
-    }
+    return mineMove == getWin(competitorMove) ? .win : .lose
 }
 
 func judgeShape(_ competitorMove: Shape, _ state: GameState) -> Shape {
     guard state != .draw else { return competitorMove }
-    switch (competitorMove, state) {
-    case (.paper, .win):
-        return .scissors
-    case (.scissors, .win):
-        return .rock
-    case (.rock, .win):
-        return .paper
-
-    case (.paper, .lose):
-        return .rock
-    case (.scissors, .lose):
-        return .paper
-    case (.rock, .lose):
-        return .scissors
+    switch state {
+    case .win:
+        return getWin(competitorMove)
+    case .lose:
+        return getLose(competitorMove)
     default:
         fatalError("Never")
     }
 }
-solutionOne(input)
-solutionTwo(input)
+
+private func getWin(_ competitorMove: Shape) -> Shape {
+    switch competitorMove {
+    case .scissors:
+        return .rock
+    case .rock:
+        return .paper
+    case .paper:
+        return .scissors
+    }
+}
+
+private func getLose(_ competitorMove: Shape) -> Shape {
+    switch competitorMove {
+    case .scissors:
+        return .paper
+    case .rock:
+        return .scissors
+    case .paper:
+        return .rock
+    }
+}
+solutionOne(transformInput)
+solutionTwo(transformInput)
 //: [Next](@next)
