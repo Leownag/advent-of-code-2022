@@ -22,19 +22,12 @@ public extension Character {
     }
 }
 
-public extension String {
-    var firstCharacter: Character {
-        guard !self.isEmpty else { return " " }
-        return self.first!
-    }
-}
-
 public extension Collection where Element: Collection, Element.Element: Hashable {
     var commonElements: Set<Element.Element> {
         if self.isEmpty { return [] }
         var commonSet = Set(self.first!)
         for other in self.dropFirst() {
-            commonSet.formIntersection(other)
+            commonSet.formIntersection(Set(other))
         }
         return commonSet
     }

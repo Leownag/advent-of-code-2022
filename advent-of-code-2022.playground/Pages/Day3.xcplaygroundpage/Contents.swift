@@ -8,7 +8,7 @@ var greeting = "Hello, playground"
 
 func solutionOne(_ input: [String]) -> Int {
     let commentStrings: [Character] = input.map {
-            $0.divide(into: 2)
+        $0.divide(into: 2)
             .commonElements
             .first!
     }
@@ -18,5 +18,19 @@ func solutionOne(_ input: [String]) -> Int {
         return value
     }.reduce(0, +)
 }
-solutionOne(input())
 
+func solutionTwo(_ input: [String]) -> Int {
+    let elfGroups = input.divide(into: input.count / 3)
+    let groupBadges: [Character] = elfGroups.map {
+        return $0.commonElements
+            .first!
+    }
+    return groupBadges.map {
+        var value = $0.letterValue
+        value += $0.isUppercase ? 26 : 0
+        return value
+    }.reduce(0, +)
+}
+
+solutionOne(input())
+solutionTwo(input())
